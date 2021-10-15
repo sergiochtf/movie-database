@@ -5,9 +5,20 @@
         <Nuxt />
       </v-container>
     </v-main>
+    <bottom-bar @on-click="onClickBottomBar"></bottom-bar>
   </v-app>
 </template>
 
 <script>
-export default {}
+import BottomBar from '~/components/layout/BottomBar'
+
+export default {
+  components: {
+    'bottom-bar': BottomBar,
+  },
+
+  methods: {
+    onClickBottomBar(clickedBtn) {},
+  },
+}
 </script>

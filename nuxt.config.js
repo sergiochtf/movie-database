@@ -74,6 +74,9 @@ export default {
       messages: {
         en: {
           search: 'Search',
+          favorite: 'Favorites',
+          'now-playing': 'Playing',
+          popular: 'Popular',
         },
       },
     },
