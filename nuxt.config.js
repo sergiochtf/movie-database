@@ -49,7 +49,12 @@ export default {
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
-  axios: {},
+  publicRuntimeConfig: {
+    axios: {
+      baseURL:
+        'https://api.themoviedb.org/3/movie/550?api_key=7c6382504b74bd6fe93e75507cee23b1',
+    },
+  },
 
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify
   vuetify: {
