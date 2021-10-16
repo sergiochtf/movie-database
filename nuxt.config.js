@@ -51,8 +51,7 @@ export default {
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   publicRuntimeConfig: {
     axios: {
-      baseURL:
-        'https://api.themoviedb.org/3/movie/550?api_key=7c6382504b74bd6fe93e75507cee23b1',
+      baseURL: 'https://api.themoviedb.org/3',
     },
   },
 
@@ -87,6 +86,8 @@ export default {
           'now-playing': 'Playing',
           popular: 'Popular',
           explore: 'Explore',
+          'most-popular': 'Most Popular Movies',
+          more: 'More',
         },
       },
     },
