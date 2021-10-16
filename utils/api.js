@@ -1,7 +1,7 @@
 const APIKEY = '7c6382504b74bd6fe93e75507cee23b1'
 const POPULAR = `/discover/movie?sort_by=popularity.desc&api_key=${APIKEY}`
 const NOW_PLAYING = `/discover/movie?primary_release_date.gte=<from>&primary_release_date.lte=<to>&api_key=${APIKEY}`
-const SEARCH_SIMPLE = `/search/movie?api_key=${APIKEY}&query=Doom`
+const SEARCH_SIMPLE = `/search/movie?api_key=${APIKEY}&query=<query>`
 
 export const fetchPopular = async function (axios, page) {
   return (await axios.$get(POPULAR.concat(`&page=${page}`))).results
@@ -24,6 +24,10 @@ export const fetchNowPlaying = async function (axios, page) {
   ).results
 }
 
-export const fetchSimpleSearch = async function (axios, page) {
-  return (await axios.$get(SEARCH_SIMPLE.concat(`&page=${page}`))).results
+export const fetchSimpleSearch = async function (axios, textSearch, page) {
+  return (
+    await axios.$get(
+      SEARCH_SIMPLE.concat(`&page=${page}`).replace('<query>', textSearch)
+    )
+  ).results
 }

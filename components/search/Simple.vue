@@ -21,8 +21,10 @@ export default {
 
   watch: {
     textSearch(newValue) {
-      if (newValue.length === 0) {
+      if (!newValue || (newValue && newValue.length === 0)) {
         this.$emit('clear-movies')
+      } else {
+        this.$emit('search', newValue)
       }
     },
   },
