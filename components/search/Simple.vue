@@ -1,0 +1,30 @@
+<template>
+  <v-row class="px-3" justify="center">
+    <v-text-field
+      v-model="textSearch"
+      single-line
+      :label="$t('search-simple')"
+      clearable
+    ></v-text-field>
+  </v-row>
+</template>
+
+<script>
+export default {
+  name: 'Simple',
+
+  data() {
+    return {
+      textSearch: '',
+    }
+  },
+
+  watch: {
+    textSearch(newValue) {
+      if (newValue.length === 0) {
+        this.$emit('clear-movies')
+      }
+    },
+  },
+}
+</script>

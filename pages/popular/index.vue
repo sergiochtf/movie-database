@@ -2,7 +2,11 @@
   <v-container grid-list-xs>
     <h1 class="pb-6">{{ $t('most-popular') }}</h1>
     <list-movies :movies="movies"></list-movies>
-    <more-btn @on-click-more="onClickMore"></more-btn>
+    <more-btn
+      v-if="movies && movies.length > 0"
+      @on-click-more="onClickMore"
+    ></more-btn>
+    <span v-else class="title">{{ $t('not-found') }}</span>
   </v-container>
 </template>
 <script>

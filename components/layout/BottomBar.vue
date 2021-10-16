@@ -14,7 +14,7 @@
     </v-btn>
 
     <v-btn value="playing" to="/playing">
-      <span>{{ $t('now-playing') }}</span>
+      <span>{{ $t('playing') }}</span>
 
       <v-icon>mdi-theater</v-icon>
     </v-btn>
@@ -38,7 +38,7 @@ export default {
   name: 'BottomBar',
   data() {
     return {
-      value: 'search',
+      value: this.$route.path.substring(1),
     }
   },
 }

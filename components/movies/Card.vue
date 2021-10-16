@@ -1,5 +1,5 @@
 <template>
-  <v-card class="mx-auto" max-width="344" height="380">
+  <v-card class="mx-auto" width="344" height="380">
     <v-img :src="$global.getImageUrl(movie.poster_path)" height="200px"></v-img>
 
     <v-card-title>
