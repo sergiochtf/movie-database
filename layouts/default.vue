@@ -1,11 +1,13 @@
 <template>
   <v-app>
-    <v-main>
+    <v-main class="mb-12">
       <v-container>
         <Nuxt />
       </v-container>
     </v-main>
-    <bottom-bar @on-click="onClickBottomBar"></bottom-bar>
+    <v-footer fixed>
+      <bottom-bar></bottom-bar>
+    </v-footer>
   </v-app>
 </template>
 
@@ -15,10 +17,6 @@ import BottomBar from '~/components/layout/BottomBar'
 export default {
   components: {
     'bottom-bar': BottomBar,
-  },
-
-  methods: {
-    onClickBottomBar(clickedBtn) {},
   },
 }
 </script>
