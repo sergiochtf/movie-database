@@ -30,5 +30,17 @@ export default {
       type: Object,
     },
   },
+
+  computed: {
+    overview() {
+      let result = this.movie.overview
+
+      if (this.movie.overview.length > 300) {
+        result = this.movie.overview.str.substring(0, 297).concat('...')
+      }
+
+      return result
+    },
+  },
 }
 </script>

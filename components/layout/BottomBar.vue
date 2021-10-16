@@ -5,6 +5,7 @@
     shift
     input-value
     :grow="$vuetify.breakpoint.mdAndUp"
+    absolute
   >
     <v-btn value="popular" to="/popular">
       <span>{{ $t('popular') }}</span>
@@ -18,7 +19,7 @@
       <v-icon>mdi-theater</v-icon>
     </v-btn>
 
-    <v-btn value="search" to="/search">
+    <v-btn value="search" to="/">
       <span>{{ $t('search') }}</span>
 
       <v-icon>mdi-movie-search</v-icon>
