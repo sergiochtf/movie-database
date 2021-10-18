@@ -1,5 +1,10 @@
 # movie-database
 
+## Requeriments
+
+- Node version v12.19.0 or higher.
+- npm version 7.0.15 or higher.
+
 ## Build Setup
 
 ```bash
