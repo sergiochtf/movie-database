@@ -22,7 +22,7 @@
     <v-btn value="search" to="/">
       <span>{{ $t('search') }}</span>
 
-      <v-icon>mdi-movie-search</v-icon>
+      <v-icon>mdi-magnify</v-icon>
     </v-btn>
 
     <v-btn value="favorite" to="/favorite">
