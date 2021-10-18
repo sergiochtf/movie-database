@@ -16,11 +16,7 @@ export default {
   },
 
   data() {
-    return { movies: [] }
-  },
-
-  created() {
-    this.movies = JSON.parse(localStorage.getItem('favorite'))
+    return { movies: this.$store.state.general.favorites }
   },
 }
 </script>

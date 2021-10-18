@@ -1,7 +1,7 @@
 <template>
   <v-row no-gutters>
     <v-col v-for="movie in movies" :key="movie.id" class="pt-7">
-      <card :movie-id="movie.id"></card>
+      <card :movie-summary="movie"></card>
     </v-col>
   </v-row>
 </template>

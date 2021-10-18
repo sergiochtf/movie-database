@@ -1,6 +1,10 @@
 <template>
   <v-card class="mx-auto" width="344" height="320">
-    <v-img :src="$global.getImageUrl(movie.poster_path)" height="200px"></v-img>
+    <v-img
+      :src="$global.getImageUrl(movieSummary.poster_path)"
+      height="200px"
+      :content-class="!movieSummary.poster_path ? 'grey' : ''"
+    ></v-img>
 
     <v-card-title class="">
       {{ title }}
@@ -27,28 +31,46 @@
           <v-img
             :src="$global.getImageUrl(movie && movie.poster_path)"
             :aspect-ratio="16 / 9"
+            :content-class="!movieSummary.poster_path ? 'grey' : ''"
           ></v-img>
           <v-card-title class="text-h5 pb-7">
-            {{ movie.title }}
+            {{ movie && movie.title }}
           </v-card-title>
           <v-card-text class="px-10">
             <v-row>
-              <strong class="body-1">{{ $t('original-title') }}:</strong>
-              <span class="body-1"> {{ movie && movie.original_title }}</span>
-            </v-row>
-            <v-row>
-              <strong class="body-1">{{ $t('release-date') }}:</strong>
-              <span class="body-1"> {{ movie && movie.release_date }}</span>
-            </v-row>
-            <v-row>
-              <strong class="body-1">{{ $t('status') }}:</strong>
-              <span class="body-1"> {{ movie && movie.status }}</span>
-            </v-row>
+              <v-col cols="12" md="6">
+                <strong>{{ $t('original-title') }}:</strong>
+                <span> {{ movie && movie.original_title }}</span>
+              </v-col>
+              <v-col cols="12" md="6">
+                <strong>{{ $t('release-date') }}:</strong>
+                <span> {{ movie && movie.release_date }}</span>
+              </v-col>
+              <v-col cols="12" md="6">
+                <strong>{{ $t('status') }}:</strong>
+                <span> {{ movie && movie.status }}</span>
+              </v-col>
 
-            <v-row>
-              <strong class="body-1">{{ $t('genres') }}:</strong>
-              <span class="body-1"> {{ genres }}</span>
-            </v-row>
+              <v-col cols="12" md="6">
+                <strong>{{ $t('revenue') }}:</strong>
+                <span> {{ formatMoney(movie && movie.revenue) }}</span>
+              </v-col>
+
+              <v-col cols="12" md="6">
+                <strong>{{ $t('budget') }}:</strong>
+                <span> {{ formatMoney(movie && movie.budget) }}</span>
+              </v-col>
+
+              <v-col cols="12" md="6">
+                <strong>{{ $t('genres') }}:</strong>
+                <span> {{ movie && genres }}</span>
+              </v-col>
+
+              <v-col cols="12" md="6">
+                <strong>{{ $t('production-companies') }}:</strong>
+                <span> {{ movie && productionCompanies }}</span>
+              </v-col></v-row
+            >
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
@@ -63,14 +85,15 @@
 </template>
 
 <script>
+import { FormatMoney } from 'format-money-js'
 import { fetchVideoId } from '~/utils/api.js'
 
 export default {
   name: 'Card',
   props: {
-    movieId: {
-      default: -1,
-      type: Number,
+    movieSummary: {
+      default: null,
+      type: Object,
       required: true,
     },
   },
@@ -78,47 +101,77 @@ export default {
   data() {
     return {
       dialog: false,
-      favorite: false,
-      movie: { poster_path: '', title: '' },
+      movie: null,
     }
   },
 
   computed: {
     isFavorite() {
-      return this.favorite
+      let isMovieFavorite = false
+
+      if (this.movieSummary) {
+        isMovieFavorite = this.$store.getters['general/isFavorite'](
+          this.movieSummary.id
+        )
+      }
+
+      return isMovieFavorite
     },
 
     title() {
-      let result = this.movie.title
+      let result = this.movieSummary.title
 
-      if (this.movie.title.length > 27) {
-        result = this.movie.title.substring(0, 24).concat('...')
+      if (this.movieSummary.title.length > 27) {
+        result = this.movieSummary.title.substring(0, 24).concat('...')
       }
 
       return result
     },
 
     genres() {
-      const result = ''
-      // this.movie &&
-      //   this.movie.genres.forEach((genre) => {
-      //     result += `${genre.name}, `
-      //   })
+      return this.extractNames(this.movie.genres)
+    },
 
-      return result.slice(0, -2)
+    productionCompanies() {
+      return this.extractNames(this.movie.production_companies)
     },
   },
 
-  async created() {
-    if (this.movieId !== -1) {
-      this.movie = await fetchVideoId(this.$axios, this.movieId)
-    }
+  watch: {
+    async dialog(newValue) {
+      if (newValue && !this.movie) {
+        this.movie = await fetchVideoId(this.$axios, this.movieSummary.id)
+      }
+    },
   },
 
   methods: {
     onClickFavorite() {
-      this.favorite = !this.favorite
-      // add/remove to vuex
+      let operation = 'general/addToFavorite'
+
+      if (this.isFavorite) {
+        operation = 'general/removeFromFavorite'
+      }
+
+      this.$store.commit(operation, this.movieSummary)
+    },
+
+    formatMoney(moneyToFormat) {
+      const fm = new FormatMoney({
+        decimals: 0,
+      })
+
+      return fm.from(moneyToFormat, { symbol: '$' })
+    },
+
+    extractNames(elements) {
+      let result = ''
+
+      elements.forEach((element) => {
+        result += `${element.name}, `
+      })
+
+      return result.slice(0, -2)
     },
   },
 }

@@ -18,5 +18,9 @@ export default {
   components: {
     'bottom-bar': BottomBar,
   },
+
+  created() {
+    this.$store.commit('general/loadFromLocalStorage')
+  },
 }
 </script>
