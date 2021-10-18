@@ -14,14 +14,18 @@
               {{ $t('explore') }}
             </v-btn>
             <v-spacer></v-spacer>
-            <v-btn icon :color="isFavorite && 'red'" @click="onClickFavorite">
+            <v-btn
+              icon
+              :color="isFavorite ? 'red' : ''"
+              @click="onClickFavorite"
+            >
               <v-icon>mdi-heart</v-icon>
             </v-btn></v-row
           >
         </template>
         <v-card>
           <v-img
-            :src="$global.getImageUrl(movie.poster_path)"
+            :src="$global.getImageUrl(movie && movie.poster_path)"
             :aspect-ratio="16 / 9"
           ></v-img>
           <v-card-title class="text-h5 pb-7">
@@ -30,13 +34,22 @@
           <v-card-text class="px-10">
             <v-row>
               <strong class="body-1">{{ $t('original-title') }}:</strong>
-              <span class="body-1"> {{ movie.original_title }}</span>
+              <span class="body-1"> {{ movie && movie.original_title }}</span>
             </v-row>
             <v-row>
               <strong class="body-1">{{ $t('release-date') }}:</strong>
-              <span class="body-1"> {{ movie.release_date }}</span>
-            </v-row></v-card-text
-          >
+              <span class="body-1"> {{ movie && movie.release_date }}</span>
+            </v-row>
+            <v-row>
+              <strong class="body-1">{{ $t('status') }}:</strong>
+              <span class="body-1"> {{ movie && movie.status }}</span>
+            </v-row>
+
+            <v-row>
+              <strong class="body-1">{{ $t('genres') }}:</strong>
+              <span class="body-1"> {{ genres }}</span>
+            </v-row>
+          </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn text @click="dialog = false">
@@ -50,16 +63,15 @@
 </template>
 
 <script>
+import { fetchVideoId } from '~/utils/api.js'
+
 export default {
   name: 'Card',
   props: {
-    movie: {
-      default: () => ({
-        poster_path: '',
-        title: '',
-        overview: '',
-      }),
-      type: Object,
+    movieId: {
+      default: -1,
+      type: Number,
+      required: true,
     },
   },
 
@@ -67,6 +79,7 @@ export default {
     return {
       dialog: false,
       favorite: false,
+      movie: { poster_path: '', title: '' },
     }
   },
 
@@ -84,6 +97,22 @@ export default {
 
       return result
     },
+
+    genres() {
+      const result = ''
+      // this.movie &&
+      //   this.movie.genres.forEach((genre) => {
+      //     result += `${genre.name}, `
+      //   })
+
+      return result.slice(0, -2)
+    },
+  },
+
+  async created() {
+    if (this.movieId !== -1) {
+      this.movie = await fetchVideoId(this.$axios, this.movieId)
+    }
   },
 
   methods: {

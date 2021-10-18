@@ -1,7 +1,7 @@
 import { URL_IMAGE } from '~/utils/constants/general.js'
 
 const global = {
-  getImageUrl(path) {
+  getImageUrl(path = '') {
     return `${URL_IMAGE}${path}`
   },
 }

@@ -1,10 +1,15 @@
 const APIKEY = '7c6382504b74bd6fe93e75507cee23b1'
-const POPULAR = `/discover/movie?sort_by=popularity.desc&api_key=${APIKEY}`
-const NOW_PLAYING = `/discover/movie?primary_release_date.gte=<from>&primary_release_date.lte=<to>&api_key=${APIKEY}`
+const POPULAR = `/movie/popular?api_key=${APIKEY}`
+const NOW_PLAYING = `/movie/now_playing?api_key=${APIKEY}`
 const SEARCH_SIMPLE = `/search/movie?api_key=${APIKEY}&query=<query>`
+const VIDEO_ID = `/movie/<id>?api_key=${APIKEY}`
 
 export const fetchPopular = async function (axios, page) {
   return (await axios.$get(POPULAR.concat(`&page=${page}`))).results
+}
+
+export const fetchVideoId = async function (axios, id) {
+  return await axios.$get(VIDEO_ID.replace('<id>', id))
 }
 
 export const fetchNowPlaying = async function (axios, page) {

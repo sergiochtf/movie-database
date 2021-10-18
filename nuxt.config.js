@@ -94,6 +94,8 @@ export default {
           close: 'Close',
           'release-date': 'Release Date',
           'original-title': 'Original Title',
+          status: 'Status',
+          genres: 'Genres',
         },
       },
     },
