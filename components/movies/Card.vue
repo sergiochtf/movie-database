@@ -7,7 +7,12 @@
     ></v-img>
 
     <v-card-title class="">
-      {{ title }}
+      <v-tooltip bottom>
+        <template #activator="{ on, attrs }">
+          <span v-bind="attrs" v-on="on">{{ title }}</span>
+        </template>
+        <span>{{ movieSummary.title }}</span>
+      </v-tooltip>
     </v-card-title>
 
     <v-card-actions>

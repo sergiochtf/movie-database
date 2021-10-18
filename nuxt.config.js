@@ -99,6 +99,8 @@ export default {
           revenue: 'Revenue',
           budget: 'Budget',
           'production-companies': 'Production Companies',
+          advanced: 'Advanced',
+          rating: 'Rating',
         },
       },
     },

@@ -1,18 +1,39 @@
 <template>
   <v-container grid-list-xs>
-    <h1 class="pb-6">{{ $t('search') }}</h1>
-    <simple-search @clear-movies="clearMovies" @search="search"></simple-search>
+    <v-row align="center" justify="space-between">
+      <h1>{{ $t('search') }}</h1>
+      <v-spacer></v-spacer>
+      <v-switch
+        v-model="advanced"
+        :label="$t('advanced')"
+        color="grey"
+      ></v-switch>
+    </v-row>
+
+    <advanced-search
+      v-if="advanced"
+      :genres="genres"
+      @search-advanced="searchAdvanced"
+    ></advanced-search>
+    <simple-search
+      v-else
+      @clear-movies="clearMovies"
+      @search="search"
+    ></simple-search>
+
     <list-movies :movies="movies"></list-movies>
-    <more-btn
-      v-if="movies && movies.length > 0"
-      @on-click-more="onClickMore"
-    ></more-btn>
+    <more-btn v-if="showMoreButton" @on-click-more="onClickMore"></more-btn>
   </v-container>
 </template>
 <script>
-import { fetchSimpleSearch } from '~/utils/api.js'
+import {
+  fetchGenres,
+  fetchSimpleSearch,
+  fetchAdvancedSearch,
+} from '~/utils/api.js'
 import List from '~/components/movies/List.vue'
 import Simple from '~/components/search/Simple.vue'
+import Advanced from '~/components/search/Advanced.vue'
 import MoreButton from '~/components/layout/MoreButton.vue'
 
 let page = 1
@@ -22,20 +43,30 @@ export default {
     'list-movies': List,
     'more-btn': MoreButton,
     'simple-search': Simple,
+    'advanced-search': Advanced,
+  },
+
+  async asyncData({ $axios, $config }) {
+    const response = await fetchGenres($axios)
+    return {
+      genres: response.genres,
+    }
   },
 
   data() {
-    return { movies: [], textSearch: '' }
+    return {
+      movies: [],
+      textSearch: '',
+      advanced: false,
+      showMoreButton: false,
+      filter: null,
+    }
   },
 
   methods: {
     async onClickMore() {
-      const moreMovies = await fetchSimpleSearch(
-        this.$axios,
-        this.textSearch,
-        ++page
-      )
-      this.movies = this.movies.concat(moreMovies)
+      page++
+      await this.loadData()
     },
 
     clearMovies() {
@@ -49,6 +80,20 @@ export default {
         page = 1
         this.movies = await fetchSimpleSearch(this.$axios, textSearch, page)
       }
+    },
+
+    async loadData() {
+      const response = await fetchAdvancedSearch(this.$axios, this.filter, page)
+      this.movies = this.movies.concat(response.results)
+      this.showMoreButton = response.total_pages > page
+    },
+
+    async searchAdvanced(filter) {
+      page = 1
+      this.filter = filter
+      this.movies = []
+
+      await this.loadData()
     },
   },
 }

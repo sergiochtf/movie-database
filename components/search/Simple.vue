@@ -5,6 +5,7 @@
       single-line
       :label="$t('search-simple')"
       clearable
+      prepend-icon="mdi-magnify"
     ></v-text-field>
   </v-row>
 </template>

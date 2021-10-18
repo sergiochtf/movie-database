@@ -2,11 +2,7 @@
   <v-container grid-list-xs>
     <h1 class="pb-6">{{ $t('most-popular') }}</h1>
     <list-movies :movies="movies"></list-movies>
-    <more-btn
-      v-if="movies && movies.length > 0"
-      @on-click-more="onClickMore"
-    ></more-btn>
-    <span v-else class="title">{{ $t('not-found') }}</span>
+    <more-btn v-if="showMoreButton" @on-click-more="onClickMore"></more-btn>
   </v-container>
 </template>
 <script>
@@ -22,18 +18,22 @@ export default {
     'more-btn': MoreButton,
   },
   async asyncData({ $axios, $config }) {
-    const movies = await fetchPopular($axios, page)
-    return { movies }
+    const response = await fetchPopular($axios, page)
+    return {
+      movies: response.results,
+      showMoreButton: response.total_pages > page,
+    }
   },
 
   data() {
-    return { movies: [] }
+    return { movies: [], showMoreButton: true }
   },
 
   methods: {
     async onClickMore() {
-      const moreMovies = await fetchPopular(this.$axios, ++page)
-      this.movies = this.movies.concat(moreMovies)
+      const responseMoreMovies = await fetchPopular(this.$axios, ++page)
+      this.movies = this.movies.concat(responseMoreMovies.results)
+      this.showMoreButton = responseMoreMovies.total_pages > page
     },
   },
 }
