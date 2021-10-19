@@ -13,12 +13,17 @@
 
 <script>
 import BottomBar from '~/components/layout/BottomBar'
-
+/**
+ * Default Layout
+ */
 export default {
   components: {
     'bottom-bar': BottomBar,
   },
 
+  /**
+   * Created method - load the favorite list movies of the user from the store
+   */
   created() {
     this.$store.commit('general/loadFromLocalStorage')
   },

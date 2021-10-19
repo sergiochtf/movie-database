@@ -66,6 +66,14 @@
 </template>
 
 <script>
+/**
+ * Component to show the advanced search options
+ * @vue-prop {Array} [genres=[]] The genres used to search movies
+ * @vue-data {Array} [selectGenres=null] The genres selected
+ * @vue-data {Boolean} [menuReleaseDate=false] Save the status of the dialog to select the date
+ * @vue-data {String} [releaseDate=null] The date selected used to search movies
+ * @vue-data {Number} [rating=0] The rating of the movies to search
+ */
 export default {
   name: 'Advanced',
 
@@ -87,11 +95,19 @@ export default {
   },
 
   methods: {
+    /**
+     * Method to set in the variable releaseDate the date selected
+     * @param {String} value Date selected to use in the search
+     */
     setReleaseDate(value) {
       this.$refs.menuReleaseDate.save(value)
       this.releaseDate = value || null
     },
 
+    /**
+     * Method to emit the event 'search-advanced' with the genres selected
+     * @returns {String} genres selected splitted by ,
+     */
     onClick() {
       const genresString = this.selectGenres
         ? this.selectGenres
@@ -108,6 +124,9 @@ export default {
       })
     },
 
+    /**
+     * Method to emit the event 'advanced-search-closed' when the user closes the dialog
+     */
     onClickClose() {
       this.$emit('advanced-search-closed')
     },

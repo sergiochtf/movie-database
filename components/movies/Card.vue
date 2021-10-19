@@ -4,6 +4,7 @@
       :src="$global.getImageUrl(movieSummary.poster_path)"
       height="200px"
       :content-class="!movieSummary.poster_path ? 'grey' : ''"
+      :alt="movieSummary && movieSummary.title"
     ></v-img>
 
     <v-card-title class="">
@@ -37,6 +38,7 @@
             :src="$global.getImageUrl(movie && movie.poster_path)"
             :aspect-ratio="16 / 9"
             :content-class="!movieSummary.poster_path ? 'grey' : ''"
+            :alt="movie && movie.title"
           ></v-img>
           <v-card-title class="text-h5 pb-7">
             {{ movie && movie.title }}
@@ -140,6 +142,16 @@
 import { FormatMoney } from 'format-money-js'
 import { fetchVideoId } from '~/utils/api.js'
 
+/**
+ * Card component to show the movie info
+ * @vue-prop {Object} [movieSummary=null] - Movie to show in the card in list view
+ * @vue-data {Boolean} [dialog=false] - Showing or not the detail view of the movie
+ * @vue-data {Object} [movie=null] - Movie to show in the card in detail view mode
+ * @vue-computed {String} isFavorite Return if the movie is or not in the favorite list of the user
+ * @vue-computed {String} title Return a short title if the title is too long
+ * @vue-computed {String} genres Return all genres of the movie
+ * @vue-computed {String} productionCompanies Return all the production companies of the movie
+ */
 export default {
   name: 'Card',
   props: {
@@ -193,6 +205,9 @@ export default {
   },
 
   watch: {
+    /**
+     * Watcher to know if it is necessary getting more info about the movie
+     */
     async dialog(newValue) {
       if (newValue && !this.movie) {
         this.movie = await fetchVideoId(this.$axios, this.movieSummary.id)
@@ -201,6 +216,9 @@ export default {
   },
 
   methods: {
+    /**
+     * Method to add or remove to the favorite list of the user
+     */
     onClickFavorite() {
       let operation = 'general/addToFavorite'
 
@@ -211,6 +229,9 @@ export default {
       this.$store.commit(operation, this.movieSummary)
     },
 
+    /**
+     * Method to format the money fields to Dollars
+     */
     formatMoney(moneyToFormat) {
       const fm = new FormatMoney({
         decimals: 0,
@@ -219,6 +240,9 @@ export default {
       return fm.from(moneyToFormat, { symbol: '$' })
     },
 
+    /**
+     * Generic method to extract in a string the field name of objects array
+     */
     extractNames(elements) {
       let result = ''
 

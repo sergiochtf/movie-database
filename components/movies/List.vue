@@ -8,6 +8,11 @@
 
 <script>
 import Card from '~/components/movies/Card.vue'
+
+/**
+ * Component to list the movie on the page
+ * @vue-prop {Array} [movies=[]] - Movies' array to show
+ */
 export default {
   name: 'List',
   components: { card: Card },

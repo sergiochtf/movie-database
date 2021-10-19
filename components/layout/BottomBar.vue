@@ -34,6 +34,11 @@
 </template>
 
 <script>
+/**
+ * Component BottomBar to show the navigation on the bottom of the page
+ * @vue-data {String} [value=this.$route.path.substring(1)] - The selected option on the bottom bar
+ */
+
 export default {
   name: 'BottomBar',
   data() {

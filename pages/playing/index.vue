@@ -12,13 +12,22 @@ import MoreButton from '~/components/layout/MoreButton.vue'
 
 let page = 1
 
+/**
+ * Index page to show the Now Playing Movies
+ * @vue-data {Array} [movies=[]] - List of movies to show
+ * @vue-data {Boolean} [showMoreButton='] - Storage the status of the more button
+ */
 export default {
   components: {
     'list-movies': List,
     'more-btn': MoreButton,
   },
 
-  async asyncData({ $axios, $config }) {
+  /**
+   * Fetch the Now Playing Movies
+   * @param {Object} $axios Object with the methods to do the GET request
+   */
+  async asyncData({ $axios }) {
     const response = await fetchNowPlaying($axios, page)
     return {
       movies: response.results,
@@ -31,6 +40,9 @@ export default {
   },
 
   methods: {
+    /**
+     * Fetch data after clicking on More Button
+     */
     async onClickMore() {
       const responseMoreMovies = await fetchNowPlaying(this.$axios, ++page)
       this.movies = this.movies.concat(responseMoreMovies.results)

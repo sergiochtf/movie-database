@@ -12,6 +12,10 @@
 </template>
 
 <script>
+/**
+ * Component to show the simple search options
+ * @vue-data {String} [textSearch=''] The text used to search movies
+ */
 export default {
   name: 'Simple',
 
@@ -22,6 +26,9 @@ export default {
   },
 
   watch: {
+    /**
+     * Watcher to manage the event to emit 'clear-movies' if the text length is 0 or 'search' if the text lenght is > 0
+     */
     textSearch(newValue) {
       if (!newValue || (newValue && newValue.length === 0)) {
         this.$emit('clear-movies')

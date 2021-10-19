@@ -10,6 +10,10 @@
 <script>
 import List from '~/components/movies/List.vue'
 
+/**
+ * Page to show the favorite movies of the user
+ * @vue-data {Array} [movies=this.$store.state.general.favorites] The favorite movies of the user storages in Vuex
+ */
 export default {
   components: {
     'list-movies': List,
