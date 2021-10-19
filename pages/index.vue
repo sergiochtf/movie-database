@@ -1,25 +1,23 @@
 <template>
   <v-container grid-list-xs>
-    <v-row align="center" justify="space-between">
+    <v-row class="mb-2">
       <h1>{{ $t('search') }}</h1>
-      <v-spacer></v-spacer>
-      <v-switch
-        v-model="advanced"
-        :label="$t('advanced')"
-        color="grey"
-      ></v-switch>
     </v-row>
 
     <advanced-search
       v-if="advanced"
       :genres="genres"
       @search-advanced="searchAdvanced"
+      @advanced-search-closed="advanced = false"
     ></advanced-search>
-    <simple-search
-      v-else
-      @clear-movies="clearMovies"
-      @search="search"
-    ></simple-search>
+    <v-row v-else>
+      <simple-search
+        @clear-movies="clearMovies"
+        @search="search"
+      ></simple-search>
+      <v-spacer></v-spacer>
+      <v-btn text @click="advanced = true"> {{ $t('advanced-search') }}</v-btn>
+    </v-row>
 
     <list-movies :movies="movies"></list-movies>
     <more-btn v-if="showMoreButton" @on-click-more="onClickMore"></more-btn>

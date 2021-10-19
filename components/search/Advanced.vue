@@ -1,6 +1,12 @@
 <template>
   <v-row justify="center">
-    <v-col cols="12" md="4" class="px-6"
+    <v-col cols="12" class="pb-0">
+      <v-btn text @click="onClickClose">
+        {{ $t('close') }}
+        <v-icon left class="ml-1"> mdi-close </v-icon>
+      </v-btn>
+    </v-col>
+    <v-col cols="12" md="4" class="px-6 pt-0"
       ><v-combobox
         v-model="selectGenres"
         hide-selected
@@ -13,7 +19,7 @@
         color="grey"
       ></v-combobox
     ></v-col>
-    <v-col cols="12" md="3" class="px-6">
+    <v-col cols="12" md="3" class="px-6 pt-0">
       <span>{{ $t('rating') }}</span>
       <v-slider
         v-model="rating"
@@ -25,7 +31,7 @@
         thumb-color="grey darken-1"
       ></v-slider>
     </v-col>
-    <v-col cols="12" md="5" class="px-6">
+    <v-col cols="12" md="5" class="px-6 pt-0">
       <v-row justify="end">
         <v-menu
           ref="menuReleaseDate"
@@ -100,6 +106,10 @@ export default {
         releaseDate: this.releaseDate,
         genres: genresString,
       })
+    },
+
+    onClickClose() {
+      this.$emit('advanced-search-closed')
     },
   },
 }

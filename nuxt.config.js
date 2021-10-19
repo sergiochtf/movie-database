@@ -6,8 +6,8 @@ export default {
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    titleTemplate: '%s - movie-database',
-    title: 'movie-database',
+    titleTemplate: '%s',
+    title: 'Movie Database',
     htmlAttrs: {
       lang: 'en',
     },
@@ -99,7 +99,7 @@ export default {
           revenue: 'Revenue',
           budget: 'Budget',
           'production-companies': 'Production Companies',
-          advanced: 'Advanced',
+          'advanced-search': 'Advanced',
           rating: 'Rating',
         },
       },
