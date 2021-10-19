@@ -11,15 +11,15 @@
         <template #activator="{ on, attrs }">
           <span v-bind="attrs" v-on="on">{{ title }}</span>
         </template>
-        <span>{{ movieSummary.title }}</span>
+        <span class="body-1">{{ movieSummary.title }}</span>
       </v-tooltip>
     </v-card-title>
 
     <v-card-actions>
-      <v-dialog v-model="dialog" persistent max-width="720">
+      <v-dialog v-model="dialog" persistent max-width="550">
         <template #activator="{ on }">
           <v-row class="mx-auto">
-            <v-btn text v-on="on">
+            <v-btn text rounded v-on="on">
               {{ $t('explore') }}
             </v-btn>
             <v-spacer></v-spacer>
@@ -44,36 +44,83 @@
           <v-card-text class="px-10">
             <v-row>
               <v-col cols="12" md="6">
-                <strong>{{ $t('original-title') }}:</strong>
-                <span> {{ movie && movie.original_title }}</span>
+                <v-col class="pa-0 ma-0">
+                  <strong class="font-weight-bold body-1"
+                    >{{ $t('original-title') }}:</strong
+                  ></v-col
+                ><v-col class="pa-0 ma-0">
+                  <span class="body-1">
+                    {{ movie && movie.original_title }}</span
+                  ></v-col
+                >
               </v-col>
               <v-col cols="12" md="6">
-                <strong>{{ $t('release-date') }}:</strong>
-                <span> {{ movie && movie.release_date }}</span>
+                <v-col class="pa-0 ma-0">
+                  <strong class="font-weight-bold body-1"
+                    >{{ $t('release-date') }}:</strong
+                  > </v-col
+                ><v-col class="pa-0 ma-0">
+                  <span class="body-1">
+                    {{ movie && movie.release_date }}</span
+                  ></v-col
+                >
               </v-col>
               <v-col cols="12" md="6">
-                <strong>{{ $t('status') }}:</strong>
-                <span> {{ movie && movie.status }}</span>
+                <v-col class="pa-0 ma-0">
+                  <strong class="font-weight-bold body-1"
+                    >{{ $t('status') }}:</strong
+                  ></v-col
+                ><v-col class="pa-0 ma-0">
+                  <span class="body-1">
+                    {{ movie && movie.status }}</span
+                  ></v-col
+                >
               </v-col>
 
-              <v-col cols="12" md="6">
-                <strong>{{ $t('revenue') }}:</strong>
-                <span> {{ formatMoney(movie && movie.revenue) }}</span>
+              <v-col cols="12" md="6"
+                ><v-col class="pa-0 ma-0">
+                  <strong class="font-weight-bold body-1"
+                    >{{ $t('revenue') }}:</strong
+                  ></v-col
+                ><v-col class="pa-0 ma-0">
+                  <span class="body-1">
+                    {{ formatMoney(movie && movie.revenue) }}</span
+                  ></v-col
+                >
               </v-col>
 
-              <v-col cols="12" md="6">
-                <strong>{{ $t('budget') }}:</strong>
-                <span> {{ formatMoney(movie && movie.budget) }}</span>
+              <v-col cols="12" md="6"
+                ><v-col class="pa-0 ma-0">
+                  <strong class="font-weight-bold body-1"
+                    >{{ $t('budget') }}:</strong
+                  ></v-col
+                ><v-col class="pa-0 ma-0">
+                  <span class="body-1">
+                    {{ formatMoney(movie && movie.budget) }}</span
+                  ></v-col
+                >
               </v-col>
 
-              <v-col cols="12" md="6">
-                <strong>{{ $t('genres') }}:</strong>
-                <span> {{ movie && genres }}</span>
+              <v-col cols="12" md="6"
+                ><v-col class="pa-0 ma-0">
+                  <strong class="font-weight-bold body-1"
+                    >{{ $t('genres') }}:</strong
+                  ></v-col
+                ><v-col class="pa-0 ma-0">
+                  <span class="body-1"> {{ movie && genres }}</span></v-col
+                >
               </v-col>
 
-              <v-col cols="12" md="6">
-                <strong>{{ $t('production-companies') }}:</strong>
-                <span> {{ movie && productionCompanies }}</span>
+              <v-col cols="12" md="6"
+                ><v-col class="pa-0 ma-0">
+                  <strong class="font-weight-bold body-1"
+                    >{{ $t('production-companies') }}:</strong
+                  ></v-col
+                ><v-col class="pa-0 ma-0">
+                  <span class="body-1">
+                    {{ movie && productionCompanies }}</span
+                  ></v-col
+                >
               </v-col></v-row
             >
           </v-card-text>
@@ -124,10 +171,13 @@ export default {
     },
 
     title() {
-      let result = this.movieSummary.title
+      let result =
+        this.movieSummary && this.movieSummary.title
+          ? this.movieSummary.title
+          : ''
 
-      if (this.movieSummary.title.length > 27) {
-        result = this.movieSummary.title.substring(0, 24).concat('...')
+      if (result.length > 27) {
+        result = result.substring(0, 24).concat('...')
       }
 
       return result
