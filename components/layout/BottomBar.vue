@@ -7,6 +7,12 @@
     :grow="$vuetify.breakpoint.mdAndUp"
     absolute
   >
+    <v-btn value="search" to="/">
+      <span>{{ $t('search') }}</span>
+
+      <v-icon>mdi-magnify</v-icon>
+    </v-btn>
+
     <v-btn value="popular" to="/popular">
       <span>{{ $t('popular') }}</span>
 
@@ -17,12 +23,6 @@
       <span>{{ $t('playing') }}</span>
 
       <v-icon>mdi-theater</v-icon>
-    </v-btn>
-
-    <v-btn value="search" to="/">
-      <span>{{ $t('search') }}</span>
-
-      <v-icon>mdi-magnify</v-icon>
     </v-btn>
 
     <v-btn value="favorite" to="/favorite">
