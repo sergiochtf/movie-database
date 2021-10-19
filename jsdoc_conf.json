@@ -1,0 +1,8 @@
+{
+  "plugins": ["node_modules/jsdoc-vuejs"],
+  "source": {
+    "include": ["pages/", "layouts/", "components/", "assets/"],
+    "includePattern": "\\.(vue|js)$",
+    "exclude": ["node_modules"]
+  }
+}

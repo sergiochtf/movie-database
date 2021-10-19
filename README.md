@@ -20,6 +20,10 @@ $ npm run start
 
 # generate static project
 $ npm run generate
+
+# generate documentation project
+$ npm install -g jsdoc
+$ npm run docs
 ```
 
 For detailed explanation on how things work, check out the [documentation](https://nuxtjs.org).
