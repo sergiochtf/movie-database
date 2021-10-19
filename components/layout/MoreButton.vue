@@ -1,8 +1,6 @@
 <template>
   <v-row no-gutters justify="center" class="pt-7">
-    <v-btn elevation="3" large outlined @click="onClick">{{
-      $t('more')
-    }}</v-btn>
+    <v-btn large outlined rounded @click="onClick">{{ $t('more') }}</v-btn>
   </v-row>
 </template>
 

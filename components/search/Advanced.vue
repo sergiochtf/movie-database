@@ -1,9 +1,9 @@
 <template>
   <v-row justify="center">
     <v-col cols="12" class="pb-0 ml-0 pl-0">
-      <v-btn text @click="onClickClose">
+      <v-btn text rounded @click="onClickClose">
+        <v-icon left class="mr-1"> mdi-close </v-icon>
         {{ $t('close') }}
-        <v-icon left class="ml-1"> mdi-close </v-icon>
       </v-btn>
     </v-col>
     <v-col cols="12" md="4" class="pt-0"
@@ -57,7 +57,7 @@
             @input="setReleaseDate"
           ></v-date-picker>
         </v-menu>
-        <v-btn text class="ma-2 mr-0" @click="onClick">{{
+        <v-btn outlined rounded class="ma-2 mr-0" @click="onClick">{{
           $t('search')
         }}</v-btn></v-row
       >

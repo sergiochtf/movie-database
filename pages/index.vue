@@ -16,7 +16,9 @@
         @search="search"
       ></simple-search>
       <v-spacer></v-spacer>
-      <v-btn text @click="advanced = true"> {{ $t('advanced-search') }}</v-btn>
+      <v-btn outlined rounded @click="advanced = true">
+        {{ $t('advanced-search') }}</v-btn
+      >
     </v-row>
 
     <list-movies :movies="movies"></list-movies>

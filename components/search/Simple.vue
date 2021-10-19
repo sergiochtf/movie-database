@@ -6,6 +6,7 @@
       :label="$t('search-simple')"
       clearable
       prepend-icon="mdi-magnify"
+      color="grey"
     ></v-text-field>
   </v-row>
 </template>
