@@ -5,7 +5,7 @@ import { URL_IMAGE } from '~/utils/constants/general.js'
  * @param {String} path Relative path of the poster
  * @returns {string} The poster URL
  */
-const global = {
+export const global = {
   getImageUrl(path = '') {
     return `${URL_IMAGE}${path}`
   },

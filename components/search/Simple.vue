@@ -1,13 +1,16 @@
 <template>
-  <v-row class="px-3" justify="center">
+  <v-row class="px-3" justify="center" align="center">
     <v-text-field
       v-model="textSearch"
       single-line
       :label="$t('search-simple')"
       clearable
-      prepend-icon="mdi-magnify"
       color="grey"
+      @keydown="textSearchChanged"
     ></v-text-field>
+    <v-btn icon @click="onClickSearch">
+      <v-icon> mdi-magnify</v-icon>
+    </v-btn>
   </v-row>
 </template>
 
@@ -32,8 +35,28 @@ export default {
     textSearch(newValue) {
       if (!newValue || (newValue && newValue.length === 0)) {
         this.$emit('clear-movies')
-      } else {
-        this.$emit('search', newValue)
+      }
+    },
+  },
+
+  methods: {
+    /**
+     * Function to emit the event 'search' with the text to search
+     * @param {KeyEvent} key Key pressed
+     */
+    textSearchChanged(key) {
+      if (key.keyCode === 13 && this.textSearch) {
+        this.$emit('search', this.textSearch)
+      }
+    },
+
+    /**
+     * Function to emit the event 'search' with the text to search
+     * @param {KeyEvent} key Key pressed
+     */
+    onClickSearch() {
+      if (this.textSearch) {
+        this.$emit('search', this.textSearch)
       }
     },
   },

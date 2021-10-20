@@ -30,6 +30,9 @@ import {
   fetchGenres,
   fetchSimpleSearch,
   fetchAdvancedSearch,
+  fetchSimpleSearchByTitle,
+  fetchMoviesByPerson,
+  fetchMoviesByCompany,
 } from '~/utils/api.js'
 import List from '~/components/movies/List.vue'
 import Simple from '~/components/search/Simple.vue'
@@ -37,6 +40,8 @@ import Advanced from '~/components/search/Advanced.vue'
 import MoreButton from '~/components/layout/MoreButton.vue'
 
 let page = 1
+let pagePerson = 1
+let pageCompany = 1
 
 /**
  * Index page to do a simple or advanced search.
@@ -79,9 +84,38 @@ export default {
     /** Fetch data after clicking on More Button */
     async onClickMore() {
       const moviesLength = this.movies.length
-      this.movies = this.movies.concat(
-        await fetchSimpleSearch(this.$axios, this.textSearch, ++page)
-      )
+      if (this.advanced) {
+        await this.fetchAdvancedSearch()
+      } else {
+        const responseTitle = await fetchSimpleSearchByTitle(
+          this.$axios,
+          this.textSearch,
+          ++page
+        )
+
+        this.movies = this.movies.concat(responseTitle)
+
+        if (this.responseSimpleSearch && this.responseSimpleSearch.length > 2) {
+          const responsePerson = (
+            await fetchMoviesByPerson(
+              this.$axios,
+              this.responseSimpleSearch[1],
+              ++pagePerson
+            )
+          ).results
+          const responseCompany = (
+            await fetchMoviesByCompany(
+              this.$axios,
+              this.responseSimpleSearch[2],
+              ++pageCompany
+            )
+          ).results
+
+          this.movies = this.movies
+            .concat(responsePerson)
+            .concat(responseCompany)
+        }
+      }
 
       if (moviesLength === this.movies.length) {
         this.showMoreButton = false
@@ -92,6 +126,11 @@ export default {
     clearMovies() {
       this.movies = []
       this.textSearch = ''
+      this.showMoreButton = false
+    },
+
+    created() {
+      this.responseSimpleSearch = null
     },
 
     /**
@@ -100,13 +139,19 @@ export default {
      */
     async search(textSearch) {
       this.textSearch = textSearch.replace(' ', '+')
-      if (textSearch.length >= 3) {
-        page = 1
-        this.movies = await fetchSimpleSearch(this.$axios, textSearch, page)
-        this.movies.length > 0
-          ? (this.showMoreButton = true)
-          : (this.showMoreButton = false)
+      page = 1
+      this.responseSimpleSearch = await fetchSimpleSearch(
+        this.$axios,
+        textSearch,
+        page
+      )
+
+      if (this.responseSimpleSearch && this.responseSimpleSearch[0]) {
+        this.movies = this.responseSimpleSearch[0]
       }
+      this.movies.length > 0
+        ? (this.showMoreButton = true)
+        : (this.showMoreButton = false)
     },
 
     /**
@@ -118,9 +163,17 @@ export default {
       this.filter = filter
       this.movies = []
 
+      await this.fetchAdvancedSearch()
+    },
+
+    /**
+     * Fetch the movies' search with the curren filter
+     */
+    async fetchAdvancedSearch() {
       const response = await fetchAdvancedSearch(this.$axios, this.filter, page)
       this.movies = this.movies.concat(response.results)
       this.showMoreButton = response.total_pages > page
+      page++
     },
   },
 }

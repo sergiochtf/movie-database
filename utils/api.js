@@ -5,13 +5,13 @@ const DISCOVER = `/discover/movie?api_key=${APIKEY}&sort_by=primary_release_date
 const MOVIES = `/search/movie?api_key=${APIKEY}`
 const VIDEO_ID = `/movie/<id>?api_key=${APIKEY}`
 const GENRES = `/genre/movie/list?api_key=${APIKEY}`
-// const PERSONS = `/search/person?api_key=${APIKEY}`
-// const COMPANIES = `/search/company?api_key=${APIKEY}`
+const PERSONS = `/search/person?api_key=${APIKEY}`
+const COMPANIES = `/search/company?api_key=${APIKEY}`
 
-// // Function to remove the elements repeated
-// const uniqByKeepLast = function (data, key) {
-//   return [...new Map(data.map((x) => [key(x), x])).values()]
-// }
+// Function to remove the elements repeated
+const uniqByKeepLast = function (data, key) {
+  return [...new Map(data.map((x) => [key(x), x])).values()]
+}
 
 /**
  * Function to do the GET request into the API
@@ -63,6 +63,55 @@ export const fetchVideoId = async function (axios, id) {
 }
 
 /**
+ * Fetch a simple search by title
+ * @param {function} axios The function to do the GET request
+ * @param {String} textSearch Text used to search movies
+ * @param {Number} page Number of page to search
+ * @returns array of movies
+ */
+export const fetchSimpleSearchByTitle = async function (
+  axios,
+  textSearch,
+  page
+) {
+  // FIND BY TITLE
+  return (
+    await fetchData(
+      axios,
+      MOVIES.concat(`&page=${page}`).concat(`&query=${textSearch}`)
+    )
+  ).results
+}
+
+/**
+ * Fetch a simple search by cast's id
+ * @param {function} axios The function to do the GET request
+ * @param {Number} id Cast id used to search movies
+ * @param {Number} page Number of page to search
+ * @returns array of movies
+ */
+export const fetchMoviesByPerson = async function (axios, id, page) {
+  return await fetchData(
+    axios,
+    DISCOVER.concat(`&page=${page}`).concat(`&with_cast=${id}`)
+  )
+}
+
+/**
+ * Fetch a simple search by company's id
+ * @param {function} axios The function to do the GET request
+ * @param {Number} id Company id used to search movies
+ * @param {Number} page Number of page to search
+ * @returns array of movies
+ */
+export const fetchMoviesByCompany = async function (axios, id, page) {
+  return await fetchData(
+    axios,
+    DISCOVER.concat(`&page=${page}`).concat(`&with_companies=${id}`)
+  )
+}
+
+/**
  * Fetch the movies using a simple search
  * @param {function} axios The function to do the GET request
  * @param {String} textSearch Text used to search movies
@@ -71,47 +120,68 @@ export const fetchVideoId = async function (axios, id) {
  */
 export const fetchSimpleSearch = async function (axios, textSearch, page) {
   let response = []
+  let castWithMoreMovies = 0
+  const companyWithMoreMovies = 0
 
-  // FIND BY TITLE
-  const responseTitle = await fetchData(
-    axios,
-    MOVIES.concat(`&page=${page}`).concat(`&query=${textSearch}`)
-  )
+  const responseTitle = await fetchSimpleSearchByTitle(axios, textSearch, page)
 
-  response = response.concat(responseTitle.results)
+  response = response.concat(responseTitle)
 
-  // // FIND BY CAST
+  // FIND BY CAST
 
-  // const responsePerson = await fetchData(
-  //   axios,
-  //   PERSONS.concat(`&page=${page}`).concat(`&query=${textSearch}`)
-  // )
+  const responsePerson = (
+    await fetchData(
+      axios,
+      PERSONS.concat(`&page=${page}`).concat(`&query=${textSearch}`)
+    )
+  ).results
 
-  // responsePerson.results.forEach((person) => {
-  //   response = response.concat(person.known_for)
-  // })
+  responsePerson.forEach(async (person) => {
+    const responseMoviesByCast = await fetchMoviesByPerson(
+      axios,
+      person.id,
+      page
+    )
 
-  // // FIND BY PRODUCTION COMPANY
+    if (
+      responseMoviesByCast &&
+      responseMoviesByCast.total_results > castWithMoreMovies
+    ) {
+      castWithMoreMovies = person.id
+    }
 
-  // const responseCompany = await fetchData(
-  //   axios,
-  //   COMPANIES.concat(`&page=${page}`).concat(`&query=${textSearch}`)
-  // )
+    response = response.concat(responseMoviesByCast.results)
+  })
 
-  // responseCompany.results.forEach(async (company) => {
-  //   const responseMoviesWithCompany = await fetchData(
-  //     axios,
-  //     DISCOVER.concat(`&page=${page}`).concat(`&with_companies=${company.id}`)
-  //   )
+  // FIND BY PRODUCTION COMPANY
 
-  //   response = response.concat(responseMoviesWithCompany.results)
-  // })
+  const responseCompany = (
+    await fetchData(
+      axios,
+      COMPANIES.concat(`&page=${page}`).concat(`&query=${textSearch}`)
+    )
+  ).results
 
-  // debugger
+  responseCompany.forEach(async (company) => {
+    const responseMoviesWithCompany = await fetchMoviesByCompany(
+      axios,
+      company.id,
+      page
+    )
 
-  // response = uniqByKeepLast(response, (movie) => movie.id)
+    if (
+      responseMoviesWithCompany &&
+      responseMoviesWithCompany.total_results > companyWithMoreMovies
+    ) {
+      castWithMoreMovies = company.id
+    }
 
-  return response
+    response = response.concat(responseMoviesWithCompany.results)
+  })
+
+  response = uniqByKeepLast(response, (movie) => movie.id)
+
+  return [response, castWithMoreMovies, companyWithMoreMovies]
 }
 
 /**
