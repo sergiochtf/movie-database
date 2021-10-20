@@ -52,7 +52,6 @@ export default {
 
     /**
      * Function to emit the event 'search' with the text to search
-     * @param {KeyEvent} key Key pressed
      */
     onClickSearch() {
       if (this.textSearch) {

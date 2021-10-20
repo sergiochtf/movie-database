@@ -7,8 +7,7 @@
       "components/",
       "assets/",
       "utils/",
-      "store/",
-      "plugins/"
+      "store/"
     ],
     "includePattern": "\\.(vue|js)$",
     "exclude": ["node_modules"]

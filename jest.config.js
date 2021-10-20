@@ -16,4 +16,5 @@ module.exports = {
   ],
   setupFilesAfterEnv: ['<rootDir>/test/setup.js'],
   testEnvironment: 'jsdom',
+  // testMatch: ['**/test/pages/playing/index.spec.js'],
 }

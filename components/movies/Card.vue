@@ -1,13 +1,13 @@
 <template>
   <v-card class="mx-auto" width="344" height="320">
     <v-img
-      :src="$global.getImageUrl(movieSummary.poster_path)"
+      :src="getImageUrl(movieSummary.poster_path)"
       height="200px"
       :content-class="!movieSummary.poster_path ? 'grey' : ''"
       :alt="movieSummary && movieSummary.title"
     ></v-img>
 
-    <v-card-title class="">
+    <v-card-title>
       <v-tooltip bottom>
         <template #activator="{ on, attrs }">
           <span v-bind="attrs" v-on="on">{{ title }}</span>
@@ -35,7 +35,7 @@
         </template>
         <v-card>
           <v-img
-            :src="$global.getImageUrl(movie && movie.poster_path)"
+            :src="getImageUrl(movie && movie.poster_path)"
             :aspect-ratio="16 / 9"
             :content-class="!movieSummary.poster_path ? 'grey' : ''"
             :alt="movie && movie.title"
@@ -141,6 +141,7 @@
 <script>
 import { FormatMoney } from 'format-money-js'
 import { fetchVideoId } from '~/utils/api.js'
+import { URL_IMAGE } from '~/utils/constants/general.js'
 
 /**
  * Card component to show the movie info
@@ -251,6 +252,15 @@ export default {
       })
 
       return result.slice(0, -2)
+    },
+
+    /**
+     * Get the Image URL
+     * @param {String} path Relative path of the poster image
+     * @returns {String} The URL of the poster for the movie
+     */
+    getImageUrl(path = '') {
+      return `${URL_IMAGE}${path}`
     },
   },
 }

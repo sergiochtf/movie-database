@@ -1,12 +1,5 @@
 <template>
-  <v-bottom-navigation
-    v-model="value"
-    dark
-    shift
-    input-value
-    :grow="$vuetify.breakpoint.mdAndUp"
-    absolute
-  >
+  <v-bottom-navigation v-model="value" dark shift input-value absolute>
     <v-btn value="search" to="/">
       <span>{{ $t('search') }}</span>
 

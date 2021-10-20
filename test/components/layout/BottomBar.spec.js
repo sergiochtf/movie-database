@@ -8,13 +8,16 @@ describe('BottomBar unit tests', () => {
     wrapper = shallowMount(BottomBar, {
       mocks: {
         $vuetify: {
-          breakpoint: { mdAndUp: true },
+          breakpoint: {
+            mdAndUp: true,
+          },
         },
         $t: jest.fn(),
         $route: { path: '/popular' },
       },
     })
   })
+
   test('is a Vue instance', () => {
     expect(wrapper.exists()).toBeTruthy()
   })
