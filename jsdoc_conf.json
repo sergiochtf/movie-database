@@ -1,0 +1,16 @@
+{
+  "plugins": ["node_modules/jsdoc-vuejs"],
+  "source": {
+    "include": [
+      "pages/",
+      "layouts/",
+      "components/",
+      "assets/",
+      "utils/",
+      "store/"
+    ],
+    "includePattern": "\\.(vue|js)$",
+    "exclude": ["node_modules"]
+  },
+  "recurseDepth": 10
+}

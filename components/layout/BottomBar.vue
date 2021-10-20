@@ -1,30 +1,24 @@
 <template>
-  <v-bottom-navigation
-    v-model="value"
-    dark
-    shift
-    input-value
-    :grow="$vuetify.breakpoint.mdAndUp"
-  >
-    <v-btn value="popular">
+  <v-bottom-navigation v-model="value" dark shift input-value absolute>
+    <v-btn value="search" to="/">
+      <span>{{ $t('search') }}</span>
+
+      <v-icon>mdi-magnify</v-icon>
+    </v-btn>
+
+    <v-btn value="popular" to="/popular">
       <span>{{ $t('popular') }}</span>
 
       <v-icon>mdi-movie-filter</v-icon>
     </v-btn>
 
-    <v-btn value="playing">
-      <span>{{ $t('now-playing') }}</span>
+    <v-btn value="playing" to="/playing">
+      <span>{{ $t('playing') }}</span>
 
       <v-icon>mdi-theater</v-icon>
     </v-btn>
 
-    <v-btn value="search">
-      <span>{{ $t('search') }}</span>
-
-      <v-icon>mdi-movie-search</v-icon>
-    </v-btn>
-
-    <v-btn value="favorite">
+    <v-btn value="favorite" to="/favorite">
       <span>{{ $t('favorite') }}</span>
 
       <v-icon>mdi-heart</v-icon>
@@ -33,20 +27,17 @@
 </template>
 
 <script>
-const ON_CLICK = 'on-click'
+/**
+ * Component BottomBar to show the navigation on the bottom of the page
+ * @vue-data {String} [value=this.$route.path.substring(1)] - The selected option on the bottom bar
+ */
 
 export default {
   name: 'BottomBar',
   data() {
     return {
-      value: 'search',
+      value: this.$route.path.substring(1),
     }
-  },
-
-  watch: {
-    value(newValue) {
-      this.$emit(ON_CLICK, newValue)
-    },
   },
 }
 </script>

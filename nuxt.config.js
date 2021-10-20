@@ -6,8 +6,8 @@ export default {
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    titleTemplate: '%s - movie-database',
-    title: 'movie-database',
+    titleTemplate: '%s',
+    title: 'Movie Database',
     htmlAttrs: {
       lang: 'en',
     },
@@ -45,7 +45,11 @@ export default {
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
-  axios: {},
+  publicRuntimeConfig: {
+    axios: {
+      baseURL: 'https://api.themoviedb.org/3',
+    },
+  },
 
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify
   vuetify: {
@@ -75,8 +79,24 @@ export default {
         en: {
           search: 'Search',
           favorite: 'Favorites',
-          'now-playing': 'Playing',
+          playing: 'Playing',
           popular: 'Popular',
+          explore: 'Explore',
+          'most-popular': 'Most Popular',
+          more: 'More Movies',
+          'now-playing': 'Now Playing',
+          'not-found': 'Movies not found',
+          'search-simple': 'Search by cast, movie, or production company names',
+          close: 'Close',
+          'release-date': 'Release Date',
+          'original-title': 'Original Title',
+          status: 'Status',
+          genres: 'Genres',
+          revenue: 'Revenue',
+          budget: 'Budget',
+          'production-companies': 'Production Companies',
+          'advanced-search': 'Advanced',
+          rating: 'Rating',
         },
       },
     },

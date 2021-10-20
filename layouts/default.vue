@@ -1,24 +1,31 @@
 <template>
   <v-app>
-    <v-main>
+    <v-main class="mb-12">
       <v-container>
         <Nuxt />
       </v-container>
     </v-main>
-    <bottom-bar @on-click="onClickBottomBar"></bottom-bar>
+    <v-footer fixed>
+      <bottom-bar></bottom-bar>
+    </v-footer>
   </v-app>
 </template>
 
 <script>
 import BottomBar from '~/components/layout/BottomBar'
-
+/**
+ * Default Layout
+ */
 export default {
   components: {
     'bottom-bar': BottomBar,
   },
 
-  methods: {
-    onClickBottomBar(clickedBtn) {},
+  /**
+   * Created method - load the favorite list movies of the user from the store
+   */
+  created() {
+    this.$store.commit('general/loadFromLocalStorage')
   },
 }
 </script>
