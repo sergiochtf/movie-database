@@ -89,4 +89,9 @@ describe('Card unit tests', () => {
     await wrapper.vm.$nextTick()
     expect(wrapper.vm.movie).toStrictEqual(MOVIE)
   })
+
+  test('Method onClickCast', () => {
+    wrapper.vm.onClickCast()
+    expect(wrapper.vm.counterCast).toStrictEqual(0)
+  })
 })

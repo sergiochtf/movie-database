@@ -59,7 +59,10 @@ export const fetchGenres = async function (axios) {
  * @returns {object} the movie found
  */
 export const fetchVideoId = async function (axios, id) {
-  return await fetchData(axios, VIDEO_ID.replace('<id>', id))
+  return await fetchData(
+    axios,
+    VIDEO_ID.replace('<id>', id).concat('&append_to_response=credits')
+  )
 }
 
 /**

@@ -3,6 +3,7 @@
     <v-img
       :src="getImageUrl(movieSummary.poster_path)"
       height="200px"
+      :aspect-ratio="16 / 9"
       :content-class="!movieSummary.poster_path ? 'grey' : ''"
       :alt="movieSummary && movieSummary.title"
     ></v-img>
@@ -123,8 +124,37 @@
                     {{ movie && productionCompanies }}</span
                   ></v-col
                 >
-              </v-col></v-row
-            >
+              </v-col>
+              <v-col
+                v-if="movie && movie.credits && movie.credits.cast"
+                cols="6"
+                md="6"
+                style="cursor: pointer"
+              >
+                <v-img
+                  class="rounded-lg elevation-0"
+                  :src="
+                    getImageUrl(
+                      movie.credits.cast &&
+                        movie.credits.cast[counterCast].profile_path
+                    )
+                  "
+                  gradient="to top right, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)"
+                  :content-class="
+                    !movie.credits.cast[counterCast].profile_path ? 'grey' : ''
+                  "
+                  :alt="
+                    movie.credits.cast && movie.credits.cast[counterCast].name
+                  "
+                  @click="onClickCast"
+                  ><span class="title white--text lighten-5 pl-1">
+                    {{
+                      movie.credits.cast && movie.credits.cast[counterCast].name
+                    }}</span
+                  ></v-img
+                >
+              </v-col>
+            </v-row>
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
@@ -148,6 +178,7 @@ import { URL_IMAGE } from '~/utils/constants/general.js'
  * @vue-prop {Object} [movieSummary=null] - Movie to show in the card in list view
  * @vue-data {Boolean} [dialog=false] - Showing or not the detail view of the movie
  * @vue-data {Object} [movie=null] - Movie to show in the card in detail view mode
+ * @vue-data {Number} [counterCasr=0] - Counter with the number to cast's number to show
  * @vue-computed {String} isFavorite Return if the movie is or not in the favorite list of the user
  * @vue-computed {String} title Return a short title if the title is too long
  * @vue-computed {String} genres Return all genres of the movie
@@ -167,6 +198,7 @@ export default {
     return {
       dialog: false,
       movie: null,
+      counterCast: 0,
     }
   },
 
@@ -212,6 +244,7 @@ export default {
     async dialog(newValue) {
       if (newValue && !this.movie) {
         this.movie = await fetchVideoId(this.$axios, this.movieSummary.id)
+        this.movie.credits.cast = this.movie.credits.cast.slice(0, 10)
       }
     },
   },
@@ -261,6 +294,21 @@ export default {
      */
     getImageUrl(path = '') {
       return `${URL_IMAGE}${path}`
+    },
+
+    /**
+     * Method to incremente the counter to show the next cast or reset
+     */
+    onClickCast() {
+      if (
+        this.movie &&
+        this.movie.credits &&
+        this.movie.credits.cast.length > this.counterCast + 1
+      ) {
+        this.counterCast++
+      } else {
+        this.counterCast = 0
+      }
     },
   },
 }
