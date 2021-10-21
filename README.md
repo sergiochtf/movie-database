@@ -78,4 +78,5 @@ The documentation generated will be under the folder `out`
 - Add SonarQube to check the test coverage and the quality
 - Improvement the simple search method.
 
+
 [movie-database]: https://www.themoviedb.org/
