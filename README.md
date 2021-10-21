@@ -65,6 +65,8 @@ To generate the documentation run:
 $ npm run docs
 ```
 
+The documentation generated will be under the folder `out`
+
 ## TODOs
 
 - The detailed film view should contain information about the main cast (max. 10 members). It should include their name and one image.
